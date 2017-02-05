@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_marker"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.map.mapmaxv1.MarkerActivity">
+
+    <TextView
+        android:text="Адрес: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewAddress"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/editTextText"
+        android:layout_alignStart="@+id/editTextText" />
+
+    <TextView
+        android:text="руб."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewRub"
+        android:layout_alignBaseline="@+id/editTextPrice"
+        android:layout_alignBottom="@+id/editTextPrice"
+        android:layout_toRightOf="@+id/editTextPrice"
+        android:layout_toEndOf="@+id/editTextPrice" />
+
+    <TextView
+        android:text="Сколько я могу заплатить"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewPrice"
+        android:textAppearance="@android:style/TextAppearance"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/editTextText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextPrice"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:hint="Введите сумму"
+        android:layout_below="@+id/textViewPrice"
+        android:layout_alignLeft="@+id/textViewPrice"
+        android:layout_alignStart="@+id/textViewPrice" />
+
+    <Button
+        android:text="Создать"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="onClick"
+        android:layout_below="@+id/editTextPrice"
+        android:layout_alignLeft="@+id/editTextPrice"
+        android:layout_alignStart="@+id/editTextPrice" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextTitle"
+        android:hint="Введите название места..."
+        android:layout_below="@+id/textViewAddress"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editTextText"
+        android:layout_width="match_parent"
+        android:hint="Введите комментарии к вашему заказу..."
+        android:layout_below="@+id/editTextTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
