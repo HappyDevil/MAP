@@ -20,7 +20,7 @@ public class MarkerActivity extends AppCompatActivity {
     private EditText editTextPrice;
     private TextView textViewAddress;
     private Button button;
-    private SwitchCompat switchCompat;
+    private Switch switchCompat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class MarkerActivity extends AppCompatActivity {
         editTextText = (EditText)findViewById(R.id.editTextText);
         editTextPrice = (EditText)findViewById(R.id.editTextPrice);
         button = (Button)findViewById(R.id.button2);
-        switchCompat = (SwitchCompat) findViewById(R.id.switch1);
+        switchCompat = (Switch) findViewById(R.id.switch1);
 
     }
 
