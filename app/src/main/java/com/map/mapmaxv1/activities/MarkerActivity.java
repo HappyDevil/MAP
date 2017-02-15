@@ -1,17 +1,26 @@
-package com.map.mapmaxv1;
+package com.map.mapmaxv1.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.map.mapmaxv1.R;
 
 public class MarkerActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextText;
     private EditText editTextPrice;
     private TextView textViewAddress;
+    private Button button;
+    private SwitchCompat switchCompat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +33,9 @@ public class MarkerActivity extends AppCompatActivity {
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
         editTextText = (EditText)findViewById(R.id.editTextText);
         editTextPrice = (EditText)findViewById(R.id.editTextPrice);
+        button = (Button)findViewById(R.id.button2);
+        switchCompat = (SwitchCompat) findViewById(R.id.switch1);
+
     }
 
     public void justDoIt(){
@@ -40,8 +52,12 @@ public class MarkerActivity extends AppCompatActivity {
             intent.putExtra("Title", editTextTitle.getText().toString());
             intent.putExtra("Text", editTextText.getText().toString());
             intent.putExtra("Price", editTextPrice.getText().toString());
+            intent.putExtra("CheckData", String.valueOf(switchCompat.isChecked()));
             setResult(RESULT_OK, intent);
             finish();
+        }else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Заполните все поля", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.map.mapmaxv1.MarkerActivity">
+    tools:context="com.map.mapmaxv1.activities.MarkerActivity">
 
     <TextView
         android:text="Адрес: "
@@ -30,40 +30,6 @@
         android:layout_alignBottom="@+id/editTextPrice"
         android:layout_toRightOf="@+id/editTextPrice"
         android:layout_toEndOf="@+id/editTextPrice" />
-
-    <TextView
-        android:text="Сколько я могу заплатить"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewPrice"
-        android:textAppearance="@android:style/TextAppearance"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_below="@+id/editTextText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editTextPrice"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:hint="Введите сумму"
-        android:layout_below="@+id/textViewPrice"
-        android:layout_alignLeft="@+id/textViewPrice"
-        android:layout_alignStart="@+id/textViewPrice" />
-
-    <Button
-        android:text="Создать"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:onClick="onClick"
-        android:layout_below="@+id/editTextPrice"
-        android:layout_alignLeft="@+id/editTextPrice"
-        android:layout_alignStart="@+id/editTextPrice" />
 
     <EditText
         android:layout_width="match_parent"
@@ -86,5 +52,49 @@
         android:layout_below="@+id/editTextTitle"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Создать"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="onClick"
+        android:layout_below="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <Switch
+        android:text="Маркер вижу только я "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1"
+        android:layout_below="@+id/editTextPrice"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:text="Сколько я могу заплатить"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewPrice"
+        android:textAppearance="@android:style/TextAppearance"
+        android:layout_below="@+id/editTextText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextPrice"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:hint="Введите сумму"
+        android:layout_below="@+id/textViewPrice"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
