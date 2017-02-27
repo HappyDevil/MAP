@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
-import android.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.map.mapmaxv1.R;
-import com.map.mapmaxv1.activities.dummy.DummyContent;
 import com.map.mapmaxv1.dto.MarkDTO;
 
 import java.util.ArrayList;
@@ -30,8 +28,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng curMark;
     private int markerLimit = 0;
     static final private int resultOfCreate = 0;
-    private ItemFragment itemFragment;
-    private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
     private FragmentManager manager;
     private FragmentTransaction transaction;
 
@@ -118,9 +114,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {                /** метод, слушающий и обрабатывающий нажатия на маркер */
         @Override
         public boolean onMarkerClick(Marker marker) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Вы достигли лимита маркеров (Максимум: 5)", Toast.LENGTH_SHORT);
-            toast.show();
-
+            Intent intent = new Intent(MapsActivity.this, ListActivity.class);
+            startActivity(intent);
             return false;
         }
         });

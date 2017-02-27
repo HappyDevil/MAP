@@ -42,7 +42,6 @@
             android:label="MarkerCreate">
 
         </activity>
-
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps">
@@ -52,8 +51,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ListActivity">
 
-
+        </activity>
     </application>
 
 </manifest>
