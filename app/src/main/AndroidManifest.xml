@@ -15,6 +15,11 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,9 +44,7 @@
 
         <activity
             android:name=".activities.MarkerActivity"
-            android:label="MarkerCreate">
-
-        </activity>
+            android:label="MarkerCreate"></activity>
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps">
@@ -51,10 +54,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.ListActivity"></activity>
         <activity
-            android:name=".activities.ListActivity">
-
-        </activity>
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>
