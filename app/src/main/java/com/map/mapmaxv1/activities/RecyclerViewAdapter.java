@@ -13,7 +13,9 @@ import com.map.mapmaxv1.R;
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+
     private String[] mList;
+
     public RecyclerViewAdapter(String[] list) {
         this.mList = list;
     }
@@ -24,14 +26,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View itemView = inflater.inflate(R.layout.test_item, parent, false);
         return new ViewHolder(itemView);
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titleTextView.setText(mList[position]);
     }
+
     @Override
     public int getItemCount() {
         return mList.length;
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTextView;
         public ViewHolder(View itemView) {

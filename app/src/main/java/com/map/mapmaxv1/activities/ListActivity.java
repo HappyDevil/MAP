@@ -33,10 +33,11 @@ public class ListActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar)findViewById(R.id.anim_toolbar);
         setSupportActionBar(mToolbar);
+
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitle(getString(R.string.numbers));
 
-        mRecycleView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecycleView = (RecyclerView)findViewById(R.id.recyclerView);
         mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setLayoutManager(mGridLayoutManager);
