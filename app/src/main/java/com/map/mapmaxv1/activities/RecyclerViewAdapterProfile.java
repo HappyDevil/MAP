@@ -12,11 +12,11 @@ import com.map.mapmaxv1.R;
  * Created by User on 27.02.2017.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterProfile extends RecyclerView.Adapter<RecyclerViewAdapterProfile.ViewHolder> {
 
     private String[] mList;
 
-    public RecyclerViewAdapter(String[] list) {
+    public RecyclerViewAdapterProfile(String[] list) {
         this.mList = list;
     }
 
