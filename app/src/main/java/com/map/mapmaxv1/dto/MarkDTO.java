@@ -10,16 +10,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class MarkDTO implements Parcelable {
-    private String title; //тип работы
-    private String text;
-    private String user;
-    private String FIO;
-    private Date date;
-    private int price;
-    private String type;
-    private double lat;
-    private double lng;
-    private boolean visible;
+    private long id; // ID
+    private String text; // Описание
+    private String user; // ниик нейм пользователя
+    private Date date;  // Дата создания марки
+    private int price;  // Цена
+    private String type; // Тип работы
+    private double lat; // Широта
+    private double lng; // Долгота
+
+    private String FIO; //  ФИО пользователя
+    private boolean visible; // Видимость
 
 
     public MarkDTO() {
@@ -27,14 +28,14 @@ public class MarkDTO implements Parcelable {
 
 
     protected MarkDTO(Parcel in) {
-        title = in.readString();
+        id = in.readLong();
         text = in.readString();
         user = in.readString();
-        FIO = in.readString();
         price = in.readInt();
         type = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
+        FIO = in.readString();
         visible = in.readByte() != 0;
     }
 
@@ -49,6 +50,14 @@ public class MarkDTO implements Parcelable {
             return new MarkDTO[size];
         }
     };
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getFIO() {
         return FIO;
@@ -72,14 +81,6 @@ public class MarkDTO implements Parcelable {
 
     public void setLng(double lng) {
         this.lng = lng;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getText() {
@@ -137,14 +138,14 @@ public class MarkDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
+        dest.writeLong(id);
         dest.writeString(text);
         dest.writeString(user);
-        dest.writeString(FIO);
         dest.writeInt(price);
         dest.writeString(type);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
+        dest.writeString(FIO);
         dest.writeByte((byte)(visible?1:0));
     }
 }

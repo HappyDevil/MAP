@@ -89,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkDTO markDTO = new MarkDTO();
                 markDTO.setLat(curMark.latitude);
                 markDTO.setLng(curMark.longitude);
-                markDTO.setTitle(data.getStringExtra("Title"));
+                markDTO.setType(data.getStringExtra("Type"));
                 markDTO.setText(data.getStringExtra("Text"));
                 markDTO.setPrice(Integer.parseInt(data.getStringExtra("Price")));
                 markDTO.setDate(new Date());
@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MarkerOptions markerOptions = new MarkerOptions();                           /** объявление объекта настроек маркера */
                 markerOptions.position(curMark);
-                markerOptions.title(markDTO.getTitle());
+                markerOptions.title(markDTO.getType());
 
                 if(visible) oneMarker = mMap.addMarker(markerOptions);                          /** созданному маркеру присвоили свою переменную его класса, на всякий */
                 visible = true;
@@ -163,7 +163,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     viewHolder.getTextViewList().setText(markDTO.getText());
                     viewHolder.getPriceTextViewList().setText(String.valueOf(markDTO.getPrice()));
                     viewHolder.getAddressViewList().setText(addressMark);
-                    viewHolder.getJobViewList().setText(markDTO.getTitle());
+                    viewHolder.getJobViewList().setText(markDTO.getType());
                     viewHolder.getProfilePhoto().setImageResource(R.drawable.z_9dc940eb);
                 }else {
 
