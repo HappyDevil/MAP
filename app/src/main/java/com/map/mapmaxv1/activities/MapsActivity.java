@@ -58,13 +58,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this); /**создание карты */
 
-        db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
+        //db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
 
         /** Тут должна быть попытка конекшена */
-        mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
-        showMarks(mark);
+        //mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
+        //showMarks(mark);
 
-        db.close();
+        //db.close();
 
     }
 

@@ -81,7 +81,7 @@ public class MarkHelper extends SQLiteOpenHelper
             db.insert(Constants.MARK_DB.DATABASE_TABLE_NAME, null, newValues);
         }
         catch (SQLiteException ex){
-            Log.d("DB_EXCEPTION", "Not enough memory");
+           //Log.d("DB_EXCEPTION", "Not enough memory");
         }
         return minID;
     }
@@ -104,7 +104,7 @@ public class MarkHelper extends SQLiteOpenHelper
             db.update(Constants.MARK_DB.DATABASE_TABLE_NAME, newValues, "id = ?", new String[] { String.valueOf(markDTO.getId()) });
         }
         catch (SQLiteException ex){
-            Log.d("DB_EXCEPTION", "Not enough memory");
+            //Log.d("DB_EXCEPTION", "Not enough memory");
         }
     }
 
@@ -114,7 +114,7 @@ public class MarkHelper extends SQLiteOpenHelper
             db.delete(Constants.MARK_DB.DATABASE_TABLE_NAME, "id = " + String.valueOf(markDTO.getId()), null);
         }
         catch (SQLiteException ex){
-            Log.d("DB_EXCEPTION", "Memory blocked");
+            //Log.d("DB_EXCEPTION", "Memory blocked");
         }
     }
 
@@ -163,7 +163,7 @@ public class MarkHelper extends SQLiteOpenHelper
             }
         }
         catch (SQLiteException ex){
-            Log.d("DB_EXCEPTION", "Read error!");
+            //Log.d("DB_EXCEPTION", "Read error!");
         }
         return mark;
     }
