@@ -2,6 +2,7 @@ package com.map.mapmaxv1.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -11,14 +12,30 @@ import android.util.Log;
 import com.map.mapmaxv1.Constants;
 import com.map.mapmaxv1.dto.MarkDTO;
 
-public class MarkHelper extends SQLiteOpenHelper {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class MarkHelper extends SQLiteOpenHelper
+{
+
+    private SQLiteDatabase db;
+    private Date lastDate;
+
+    public Date getLastDate() {
+        return lastDate;
+    }
 
     public MarkHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+        db = this.getWritableDatabase();
+        lastDate=null;
     }
 
     public MarkHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
+        db = this.getWritableDatabase();
+        lastDate=null;
     }
 
     @Override
@@ -40,10 +57,8 @@ public class MarkHelper extends SQLiteOpenHelper {
 
     public void writeMark(MarkDTO markDTO)
     {
-        SQLiteDatabase db;
-        try {
-            db = this.getWritableDatabase();
-
+        try
+        {
             ContentValues newValues = new ContentValues();
 
             newValues.put(Constants.MARK_DB.MARK_ID, markDTO.getId());
@@ -56,7 +71,6 @@ public class MarkHelper extends SQLiteOpenHelper {
             newValues.put(Constants.MARK_DB.MARK_TYPE, markDTO.getType());
             newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
             newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
-            newValues.put(Constants.MARK_DB.MARK_VERSION, 1);
 
             db.insert(Constants.MARK_DB.DATABASE_NAME, null, newValues);
         }
@@ -64,15 +78,12 @@ public class MarkHelper extends SQLiteOpenHelper {
             Log.d("DB_EXCEPTION", "Not enough memory");
         }
     }
+
     public void updateMark(MarkDTO markDTO)
     {
-        SQLiteDatabase db;
         try {
-            db = this.getWritableDatabase();
-
             ContentValues newValues = new ContentValues();
 
-            newValues.put(Constants.MARK_DB.MARK_ID, markDTO.getId());
             newValues.put(Constants.MARK_DB.MARK_TEXT, markDTO.getText());
             newValues.put(Constants.MARK_DB.MARK_USER, markDTO.getUser());
             newValues.put(Constants.MARK_DB.MARK_DATE, String.valueOf(markDTO.getDate()));
@@ -82,12 +93,66 @@ public class MarkHelper extends SQLiteOpenHelper {
             newValues.put(Constants.MARK_DB.MARK_TYPE, markDTO.getType());
             newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
             newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
-            newValues.put(Constants.MARK_DB.MARK_VERSION, 1);
 
-            db.insert(Constants.MARK_DB.DATABASE_NAME, null, newValues);
+            db.update(Constants.MARK_DB.DATABASE_NAME , newValues, "id = ?", new String[] { String.valueOf(markDTO.getId()) });
         }
         catch (SQLiteException ex){
             Log.d("DB_EXCEPTION", "Not enough memory");
         }
+    }
+
+    public void deleteMark(MarkDTO markDTO)
+    {
+        try {
+            db.delete(Constants.MARK_DB.DATABASE_NAME, "id = " + String.valueOf(markDTO.getId()), null);
+        }
+        catch (SQLiteException ex){
+            Log.d("DB_EXCEPTION", "Memory blocked");
+        }
+    }
+
+    public List<MarkDTO>  readMark(String[] columns,String selection,String[] selectionArgs, String groupBy,String having,String orderBy)
+    {
+        List<MarkDTO> mark= new ArrayList<>();
+        MarkDTO m;
+        try {
+            Cursor c = db.query(Constants.MARK_DB.DATABASE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+            if(c.moveToFirst())
+            {
+                int idColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_ID);
+                int textColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_TEXT);
+                int userColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_USER);
+                int dateColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_DATE);
+                int priceColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_PRICE);
+                int latColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_LAT);
+                int lngColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_LNG);
+                int typeColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_TYPE);
+                int fioColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_FIO);
+                int visibleColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_VISIBLE);
+
+                do {
+                    m=new MarkDTO();
+                    m.setId(c.getInt(idColIndex));
+                    m.setText(c.getString(textColIndex));
+                    m.setUser(c.getString(userColIndex));
+                    Date date = new Date(c.getString(dateColIndex));
+
+                    if((lastDate==null)||(lastDate.before(date))) lastDate=date;
+
+                    m.setDate(date);
+                    m.setPrice(c.getInt(priceColIndex));
+                    m.setLat(c.getDouble(latColIndex));
+                    m.setLng(c.getDouble(lngColIndex));
+                    m.setType(c.getString(typeColIndex));
+                    m.setFIO(c.getString(fioColIndex));
+                    m.setVisible(Boolean.getBoolean(c.getString(visibleColIndex)));
+                    mark.add(m);
+                }while(c.moveToNext());
+            }
+        }
+        catch (SQLiteException ex){
+            Log.d("DB_EXCEPTION", "Read error!");
+        }
+        return mark;
     }
 }

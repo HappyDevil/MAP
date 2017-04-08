@@ -18,10 +18,8 @@ public class MarkDTO implements Parcelable {
     private String type; // Тип работы
     private double lat; // Широта
     private double lng; // Долгота
-
     private String FIO; //  ФИО пользователя
     private boolean visible; // Видимость
-
 
     public MarkDTO() {
     }
