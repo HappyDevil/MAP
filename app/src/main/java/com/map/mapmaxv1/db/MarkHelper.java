@@ -21,27 +21,28 @@ public class MarkHelper extends SQLiteOpenHelper
 
     private SQLiteDatabase db;
     private Date lastDate;
+    private int minID;
 
     public Date getLastDate() {
         return lastDate;
     }
 
-    public MarkHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-        db = this.getWritableDatabase();
-        lastDate=null;
+    public MarkHelper(Context context) {
+        super(context, Constants.MARK_DB.DATABASE_NAME, null, Constants.MARK_DB.DATABASE_VERSION);
+        this.openConnection();
+        minID = 0;
+        lastDate = null;
     }
 
-    public MarkHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
+    public void openConnection()
+    {
         db = this.getWritableDatabase();
-        lastDate=null;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // создаем таблицу с полями
-        db.execSQL("CREATE TABLE " + Constants.MARK_DB.DATABASE_NAME + " (" +
+        db.execSQL("CREATE TABLE " + Constants.MARK_DB.DATABASE_TABLE_NAME + " (" +
                 Constants.MARK_DB.MARK_ID + " INTEGER PRIMARY KEY," + Constants.MARK_DB.MARK_TEXT + " TEXT," +
                 Constants.MARK_DB.MARK_USER + " TEXT, " + Constants.MARK_DB.MARK_DATE + " INTEGER," +
                 Constants.MARK_DB.MARK_PRICE + " INTEGER," + Constants.MARK_DB.MARK_LAT + " INTEGER," +
@@ -55,13 +56,18 @@ public class MarkHelper extends SQLiteOpenHelper
 
     }
 
-    public void writeMark(MarkDTO markDTO)
+    public int writeMark(MarkDTO markDTO,boolean global)
     {
         try
         {
             ContentValues newValues = new ContentValues();
 
-            newValues.put(Constants.MARK_DB.MARK_ID, markDTO.getId());
+            if(global) newValues.put(Constants.MARK_DB.MARK_ID, markDTO.getId());
+            else
+            {
+                minID--;
+                newValues.put(Constants.MARK_DB.MARK_ID,minID);
+            }
             newValues.put(Constants.MARK_DB.MARK_TEXT, markDTO.getText());
             newValues.put(Constants.MARK_DB.MARK_USER, markDTO.getUser());
             newValues.put(Constants.MARK_DB.MARK_DATE, String.valueOf(markDTO.getDate()));
@@ -72,11 +78,12 @@ public class MarkHelper extends SQLiteOpenHelper
             newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
             newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
 
-            db.insert(Constants.MARK_DB.DATABASE_NAME, null, newValues);
+            db.insert(Constants.MARK_DB.DATABASE_TABLE_NAME, null, newValues);
         }
         catch (SQLiteException ex){
             Log.d("DB_EXCEPTION", "Not enough memory");
         }
+        return minID;
     }
 
     public void updateMark(MarkDTO markDTO)
@@ -94,7 +101,7 @@ public class MarkHelper extends SQLiteOpenHelper
             newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
             newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
 
-            db.update(Constants.MARK_DB.DATABASE_NAME , newValues, "id = ?", new String[] { String.valueOf(markDTO.getId()) });
+            db.update(Constants.MARK_DB.DATABASE_TABLE_NAME, newValues, "id = ?", new String[] { String.valueOf(markDTO.getId()) });
         }
         catch (SQLiteException ex){
             Log.d("DB_EXCEPTION", "Not enough memory");
@@ -104,7 +111,7 @@ public class MarkHelper extends SQLiteOpenHelper
     public void deleteMark(MarkDTO markDTO)
     {
         try {
-            db.delete(Constants.MARK_DB.DATABASE_NAME, "id = " + String.valueOf(markDTO.getId()), null);
+            db.delete(Constants.MARK_DB.DATABASE_TABLE_NAME, "id = " + String.valueOf(markDTO.getId()), null);
         }
         catch (SQLiteException ex){
             Log.d("DB_EXCEPTION", "Memory blocked");
@@ -116,7 +123,7 @@ public class MarkHelper extends SQLiteOpenHelper
         List<MarkDTO> mark= new ArrayList<>();
         MarkDTO m;
         try {
-            Cursor c = db.query(Constants.MARK_DB.DATABASE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+            Cursor c = db.query(Constants.MARK_DB.DATABASE_TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
             if(c.moveToFirst())
             {
                 int idColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_ID);
@@ -132,7 +139,11 @@ public class MarkHelper extends SQLiteOpenHelper
 
                 do {
                     m=new MarkDTO();
-                    m.setId(c.getInt(idColIndex));
+                    int id =  c.getInt(idColIndex);
+
+                    if(minID>id) minID=id;
+
+                    m.setId(id);
                     m.setText(c.getString(textColIndex));
                     m.setUser(c.getString(userColIndex));
                     Date date = new Date(c.getString(dateColIndex));
@@ -148,6 +159,7 @@ public class MarkHelper extends SQLiteOpenHelper
                     m.setVisible(Boolean.getBoolean(c.getString(visibleColIndex)));
                     mark.add(m);
                 }while(c.moveToNext());
+                c.close();
             }
         }
         catch (SQLiteException ex){
