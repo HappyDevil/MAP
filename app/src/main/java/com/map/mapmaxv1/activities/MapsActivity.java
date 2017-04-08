@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.map.mapmaxv1.R;
+import com.map.mapmaxv1.db.MarkHelper;
 import com.map.mapmaxv1.dto.MarkDTO;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker oneMarker;
     private List<MarkDTO> markchoose;
     private boolean markersize = true;
+    private MarkHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);                                                       /**создание карты */
+        mapFragment.getMapAsync(this); /**создание карты */
+
+        db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
+
+        /** Тут должна быть попытка конекшена */
+        mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
+        showMarks(mark);
+
+        db.close();
 
     }
 
@@ -80,6 +90,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    public void showMarks(List<MarkDTO> mark)
+    {
+        for(MarkDTO m : mark)
+        {
+            if(m.isVisible())
+            {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(m.getLat(),m.getLng()));
+                markerOptions.title(m.getTitle());
+                oneMarker = mMap.addMarker(markerOptions);
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){           /** ждет данные, которые должны прийти с активности с номером 0 */
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,11 +119,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markDTO.setPrice(Integer.parseInt(data.getStringExtra("Price")));
                 markDTO.setDate(new Date());
                 markDTO.setVisible(visible);
-                if (data.getStringExtra("CheckData") == "true") {                            /** проверяет в какую базу данных загружать маркер, локальный он будет или нет */
-                        mark.add(markDTO);                                                   /** добавление маркера в локальную базу данных */
-                }else{
-                        mark.add(markDTO);
-                    }
+                if (data.getStringExtra("CheckData").equals("true"))  /** проверяет в какую базу данных загружать маркер, локальный он будет или нет */
+                {
+                    db.openConnection();
+                    int id=db.writeMark(markDTO,false); /** добавление маркера в локальную базу данных */
+                    markDTO.setId(id);
+                    mark.add(markDTO);
+                    db.close();
+                }
+                else
+                {
+                    mark.add(markDTO);
+                }
 
                 MarkerOptions markerOptions = new MarkerOptions();                           /** объявление объекта настроек маркера */
                 markerOptions.position(curMark);

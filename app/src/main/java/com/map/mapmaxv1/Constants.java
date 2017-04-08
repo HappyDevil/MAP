@@ -15,7 +15,9 @@ public class Constants {
     public static class MARK_DB
     {
         public static final int DATABASE_VERSION=1;
-        public static final String DATABASE_NAME="Mark";
+        public static final String DATABASE_NAME ="MAPDB";
+        public static final String DATABASE_TABLE_NAME ="Mark";
+
 
         public static final String MARK_ID="id";
         public static final String MARK_TEXT="text";
