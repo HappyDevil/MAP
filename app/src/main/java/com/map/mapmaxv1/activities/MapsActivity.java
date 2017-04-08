@@ -89,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkDTO markDTO = new MarkDTO();
                 markDTO.setLat(curMark.latitude);
                 markDTO.setLng(curMark.longitude);
+                markDTO.setTitle(data.getStringExtra("Title"));
                 markDTO.setType(data.getStringExtra("Type"));
                 markDTO.setText(data.getStringExtra("Text"));
                 markDTO.setPrice(Integer.parseInt(data.getStringExtra("Price")));
@@ -102,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MarkerOptions markerOptions = new MarkerOptions();                           /** объявление объекта настроек маркера */
                 markerOptions.position(curMark);
-                markerOptions.title(markDTO.getType());
+                markerOptions.title(markDTO.getTitle());
 
                 if(visible) oneMarker = mMap.addMarker(markerOptions);                          /** созданному маркеру присвоили свою переменную его класса, на всякий */
                 visible = true;
@@ -154,20 +155,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ContextThemeWrapper wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme);
                 LayoutInflater inflater = (LayoutInflater) wrapper.getSystemService(LAYOUT_INFLATER_SERVICE);
                 //View layout = inflater.inflate(R.layout.item_list, null);
-                View itemView = inflater.inflate(R.layout.item_infowindow, null);
-                RecyclerViewAdapterList.ViewHolder viewHolder = new RecyclerViewAdapterList.ViewHolder(itemView,true);
+                View itemView = inflater.inflate(R.layout.item_list, null);
+                RecyclerViewAdapterList.ViewHolder viewHolder = new RecyclerViewAdapterList.ViewHolder(itemView);
 
-                if (markersize){
-                    MarkDTO markDTO = markchoose.get(0);
-                    viewHolder.getNameTextViewList().setText(markDTO.getFIO());
-                    viewHolder.getTextViewList().setText(markDTO.getText());
-                    viewHolder.getPriceTextViewList().setText(String.valueOf(markDTO.getPrice()));
-                    viewHolder.getAddressViewList().setText(addressMark);
-                    viewHolder.getJobViewList().setText(markDTO.getType());
-                    viewHolder.getProfilePhoto().setImageResource(R.drawable.z_9dc940eb);
-                }else {
 
-                }
 
                 return itemView;
             }
@@ -191,12 +182,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markchoose.add(mark.get(i));
                 }
             }
-
-            if(markchoose.size() == 1){
-                markersize = true;
-            }else{
-                markersize = false;
-            }
             return false;
         }
         });
@@ -204,15 +189,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                if (markersize){
-                    Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(MapsActivity.this, ListActivity.class);
-                    intent.putParcelableArrayListExtra("MarkList", (ArrayList<? extends Parcelable>) markchoose);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(MapsActivity.this, ListActivity.class);
+                intent.putParcelableArrayListExtra("MarkList", (ArrayList<? extends Parcelable>) markchoose);
+                startActivity(intent);
 
+                marker.hideInfoWindow();
             }
         });
     }

@@ -12,7 +12,8 @@ import java.util.Date;
 public class MarkDTO implements Parcelable {
     private long id; // ID
     private String text; // Описание
-    private String user; // ниик нейм пользователя
+    private String title; // Название места маркера
+    private String user; // Ник нейм пользователя
     private Date date;  // Дата создания марки
     private int price;  // Цена
     private String type; // Тип работы
@@ -30,6 +31,7 @@ public class MarkDTO implements Parcelable {
     protected MarkDTO(Parcel in) {
         id = in.readLong();
         text = in.readString();
+        title = in.readString();
         user = in.readString();
         price = in.readInt();
         type = in.readString();
@@ -91,6 +93,14 @@ public class MarkDTO implements Parcelable {
         this.text = text;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getUser() {
         return user;
     }
@@ -140,6 +150,7 @@ public class MarkDTO implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeString(text);
+        dest.writeString(title);
         dest.writeString(user);
         dest.writeInt(price);
         dest.writeString(type);

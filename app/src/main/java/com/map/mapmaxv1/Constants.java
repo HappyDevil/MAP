@@ -29,5 +29,8 @@ public class Constants {
         public static final String MARK_VISIBLE="visible";
         public static final String MARK_VERSION="version";
     }
-
+    public static class JOB_TYPES
+    {
+        public static final String[] list = {"A", "B", "C", "Другое..."};
+    }
 }

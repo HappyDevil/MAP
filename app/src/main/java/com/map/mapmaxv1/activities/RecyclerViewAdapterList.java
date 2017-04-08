@@ -39,10 +39,12 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterList.ViewHolder holder, int position) {
-        holder.nameTextViewList.setText(position+1 + ". " + mList.get(position).getUser());
+        holder.nameTextViewList.setText(position+1 + ". " + mList.get(position).getFIO());
         holder.textViewList.setText(mList.get(position).getText());
-        holder.priceTextViewList.setText(String.valueOf(mList.get(position).getPrice()));
+        holder.priceTextViewList.setText(String.valueOf(mList.get(position).getPrice()) + " руб.");
         holder.profilePhoto.setImageResource(R.drawable.z_9dc940eb);
+        holder.typeTextViewList.setText(mList.get(position).getType());
+        holder.titleTextViewList.setText(mList.get(position).getTitle());
         //holder.galleryMarker.setImageResource(R.drawable.z_9dc940eb);
 
     }
@@ -62,31 +64,22 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
         private TextView priceTextViewList;
         private TextView textViewList;
         private TextView addressViewList;
-        private TextView jobViewList;
         private ImageView profilePhoto;
         private ImageButton galleryMarker;
         private CardView cardView;
+        private TextView typeTextViewList;
+        private TextView titleTextViewList;
 
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.cv);
             nameTextViewList = (TextView)itemView.findViewById(R.id.textView3);
-            priceTextViewList = (TextView)itemView.findViewById(R.id.textView5);
-            textViewList = (TextView)itemView.findViewById(R.id.textView4);
+            titleTextViewList = (TextView)itemView.findViewById(R.id.textView4);
+            priceTextViewList = (TextView)itemView.findViewById(R.id.textView6);
+            textViewList = (TextView)itemView.findViewById(R.id.textView5);
+            typeTextViewList = (TextView)itemView.findViewById(R.id.textView7);
             profilePhoto = (ImageView)itemView.findViewById(R.id.imageView2);
             galleryMarker = (ImageButton)itemView.findViewById(R.id.imageButton3);
-            itemView.setTag(itemView);
-        }
-
-        public ViewHolder(View itemView, boolean b) {
-            super(itemView);
-            cardView = (CardView)itemView.findViewById(R.id.infowindow);
-            addressViewList = (TextView)itemView.findViewById(R.id.textView10);
-            nameTextViewList = (TextView)itemView.findViewById(R.id.textView9);
-            priceTextViewList = (TextView)itemView.findViewById(R.id.textView13);
-            textViewList = (TextView)itemView.findViewById(R.id.textView11);
-            jobViewList = (TextView)itemView.findViewById(R.id.textView12);
-            profilePhoto = (ImageView)itemView.findViewById(R.id.imageView3);
             itemView.setTag(itemView);
         }
 
@@ -96,14 +89,6 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
 
         public void setAddressViewList(TextView addressViewList) {
             this.addressViewList = addressViewList;
-        }
-
-        public TextView getJobViewList() {
-            return jobViewList;
-        }
-
-        public void setJobViewList(TextView jobViewList) {
-            this.jobViewList = jobViewList;
         }
 
         public TextView getNameTextViewList() {
@@ -153,7 +138,16 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
         public void setCardView(CardView cardView) {
             this.cardView = cardView;
         }
+
+        public TextView getTypeTextViewList() {
+            return typeTextViewList;
+        }
+
+        public void setTypeTextViewList(TextView typeTextViewList) {
+            this.typeTextViewList = typeTextViewList;
+        }
     }
+
 
 
 
