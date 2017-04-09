@@ -58,13 +58,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this); /**создание карты */
 
-        //db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
+        db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
+        db.openConnection(db.getWritableDatabase());
 
         /** Тут должна быть попытка конекшена */
-        //mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
-        //showMarks(mark);
+        mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
 
-        //db.close();
+        db.close();
 
     }
 
@@ -87,6 +87,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         justTest(mMap);
+        showMarks(mark);
+
     }
 
 
@@ -121,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markDTO.setVisible(visible);
                 if (data.getStringExtra("CheckData").equals("true"))  /** проверяет в какую базу данных загружать маркер, локальный он будет или нет */
                 {
-                    db.openConnection();
+                    db.openConnection(db.getWritableDatabase());
                     int id=db.writeMark(markDTO,false); /** добавление маркера в локальную базу данных */
                     markDTO.setId(id);
                     mark.add(markDTO);

@@ -29,14 +29,13 @@ public class MarkHelper extends SQLiteOpenHelper
 
     public MarkHelper(Context context) {
         super(context, Constants.MARK_DB.DATABASE_NAME, null, Constants.MARK_DB.DATABASE_VERSION);
-        this.openConnection();
         minID = 0;
         lastDate = null;
     }
 
-    public void openConnection()
+    public void openConnection(SQLiteDatabase connect)
     {
-        db = this.getWritableDatabase();
+        db = connect;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class MarkHelper extends SQLiteOpenHelper
                 Constants.MARK_DB.MARK_PRICE + " INTEGER," + Constants.MARK_DB.MARK_LAT + " INTEGER," +
                 Constants.MARK_DB.MARK_LNG + " TEXT," + Constants.MARK_DB.MARK_TYPE + " TEXT," +
                 Constants.MARK_DB.MARK_FIO + " TEXT," + Constants.MARK_DB.MARK_VISIBLE + " INTEGER," +
-                Constants.MARK_DB.MARK_VERSION + " INTEGER,");
+                Constants.MARK_DB.MARK_VERSION + " INTEGER);");
     }
 
     @Override
@@ -76,6 +75,7 @@ public class MarkHelper extends SQLiteOpenHelper
             newValues.put(Constants.MARK_DB.MARK_LNG, String.valueOf(markDTO.getLng()));
             newValues.put(Constants.MARK_DB.MARK_TYPE, markDTO.getType());
             newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
+
             newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
 
             db.insert(Constants.MARK_DB.DATABASE_TABLE_NAME, null, newValues);
@@ -156,7 +156,13 @@ public class MarkHelper extends SQLiteOpenHelper
                     m.setLng(c.getDouble(lngColIndex));
                     m.setType(c.getString(typeColIndex));
                     m.setFIO(c.getString(fioColIndex));
-                    m.setVisible(Boolean.getBoolean(c.getString(visibleColIndex)));
+
+                    String vis = c.getString(visibleColIndex);
+                    boolean b;
+                    if(vis.equals("true")) b=true;
+                    else b=false;
+                    m.setVisible(b);
+
                     mark.add(m);
                 }while(c.moveToNext());
                 c.close();
