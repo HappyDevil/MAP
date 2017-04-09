@@ -1,5 +1,13 @@
 package com.map.mapmaxv1.activities;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -39,10 +47,15 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterList.ViewHolder holder, int position) {
+        Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.z_9dc940eb);
+        //Bitmap bitmap = ((BitmapDrawable)holder.profilePhoto.getDrawable()).getBitmap();
+        bitmap = getCircleImageUsingShader(bitmap, 10);
+        Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
+
         holder.nameTextViewList.setText(position+1 + ". " + mList.get(position).getFIO());
         holder.textViewList.setText(mList.get(position).getText());
         holder.priceTextViewList.setText(String.valueOf(mList.get(position).getPrice()) + " руб.");
-        holder.profilePhoto.setImageResource(R.drawable.z_9dc940eb);
+        holder.profilePhoto.setImageDrawable(drawable);
         holder.typeTextViewList.setText(mList.get(position).getType());
         holder.titleTextViewList.setText(mList.get(position).getTitle());
         //holder.galleryMarker.setImageResource(R.drawable.z_9dc940eb);
@@ -148,6 +161,24 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
         }
     }
 
+    public static Bitmap getCircleImageUsingShader(Bitmap sourse, int radius){
+        if (sourse == null){ return null; }
+
+        int diam = radius << 1;
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        Bitmap scaleBitmap = Bitmap.createScaledBitmap(sourse, diam, diam, true);
+        final Shader shader = new BitmapShader(scaleBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+
+        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(targetBitmap);
+
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        return targetBitmap;
+    }
 
 
 

@@ -2,6 +2,13 @@ package com.map.mapmaxv1.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -46,7 +53,6 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapterList);
-
     }
 
 
@@ -63,4 +69,24 @@ public class ListActivity extends AppCompatActivity {
         Intent intent = new Intent(ListActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
+
+    public static Bitmap getCircleImageUsingShader(Bitmap sourse, int radius){
+        if (sourse == null){ return null; }
+
+        int diam = radius << 1;
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        Bitmap scaleBitmap = Bitmap.createScaledBitmap(sourse, diam, diam, true);
+        final Shader shader = new BitmapShader(scaleBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+
+        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(targetBitmap);
+
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        return targetBitmap;
+    }
+
 }

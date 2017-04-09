@@ -30,8 +30,7 @@
                 android:layout_height="100dp"
                 android:adjustViewBounds="true"
                 android:background="@android:color/holo_blue_dark"
-                android:onClick="onClickButton"
-                app:srcCompat="@drawable/z_9dc940eb" />
+                android:onClick="onClickButton" />
 
             <TextView
                 android:id="@+id/textView3"
