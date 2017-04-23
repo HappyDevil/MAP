@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.map.mapmaxv1.activities.FragmentMap;
 import com.map.mapmaxv1.activities.ListActivity;
 import com.map.mapmaxv1.activities.MapsActivity;
 import com.map.mapmaxv1.activities.ProfileActivity;
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if (id == R.id.action_search) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -84,6 +89,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
+        Fragment fragment = null;
+        Class fragmentClass = null;
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
@@ -96,12 +104,24 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, ListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
+            fragmentClass = FragmentMap.class;
+
+        } else if (id == R.id.nav_search) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container_all, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //drawer.closeDrawer(GravityCompat.START);

@@ -11,6 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.map.mapmaxv1.activities.MarkerActivity">
 
+
     <TextView
         android:text="Адрес: "
         android:layout_width="wrap_content"

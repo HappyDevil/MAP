@@ -55,7 +55,8 @@
         <activity android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme1"/>
 
-        <activity android:name=".activities.ListActivity" />
+        <activity android:name=".activities.ListActivity"
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".activities.LoginActivity"
