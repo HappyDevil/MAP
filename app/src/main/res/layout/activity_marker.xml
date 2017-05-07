@@ -55,15 +55,15 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:text="Создать"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/button2"
-        android:onClick="onClick"
-        android:layout_below="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
+        android:layout_below="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:onClick="onClick"
+        android:text="Создать" />
 
     <Switch
         android:text="Маркер вижу только я "
@@ -71,9 +71,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/switch1"
         android:layout_below="@+id/editTextPrice"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
+        android:layout_alignRight="@+id/textViewRub"
+        android:layout_alignEnd="@+id/textViewRub"
+        android:layout_marginTop="13dp" />
 
     <TextView
         android:text="Сколько я могу заплатить"
@@ -81,10 +81,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewPrice"
         android:textAppearance="@android:style/TextAppearance"
-        android:layout_below="@+id/editTextText"
+        android:layout_below="@+id/multiAutoCompleteTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="11dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -95,6 +95,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:hint="Введите сумму"
         android:layout_below="@+id/textViewPrice"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/multiAutoCompleteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Введите вид вашей деятельности"
+        android:layout_below="@+id/editTextText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

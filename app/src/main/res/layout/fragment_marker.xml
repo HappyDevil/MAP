@@ -14,9 +14,9 @@
         tools:layout="@layout/fragment_photo" />
 
     <fragment
+        android:id="@+id/fragment2"
+        android:name="com.map.mapmaxv1.activities.FragmentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.map.mapmaxv1.activities.FragmentList"
-        android:id="@+id/fragment2"
         tools:layout="@layout/fragment_list" />
 </LinearLayout>

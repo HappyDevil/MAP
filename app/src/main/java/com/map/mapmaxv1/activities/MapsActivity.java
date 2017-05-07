@@ -2,16 +2,30 @@ package com.map.mapmaxv1.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,9 +35,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.map.mapmaxv1.CircularTransformation;
+import com.map.mapmaxv1.MainActivity;
 import com.map.mapmaxv1.R;
 import com.map.mapmaxv1.db.MarkHelper;
 import com.map.mapmaxv1.dto.MarkDTO;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +50,7 @@ import java.util.Locale;
 
 import static java.lang.Math.sqrt;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     private List<MarkDTO> mark= new ArrayList<>();
@@ -48,15 +65,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<MarkDTO> markchoose;
     private boolean markersize = true;
     private MarkHelper db;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this); /**создание карты */
+
+        context = this;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
         db.openConnection(db.getWritableDatabase());
@@ -187,11 +229,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public View getInfoWindow(Marker marker) {
                 ContextThemeWrapper wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme);
                 LayoutInflater inflater = (LayoutInflater) wrapper.getSystemService(LAYOUT_INFLATER_SERVICE);
-                //View layout = inflater.inflate(R.layout.item_list, null);
-                View itemView = inflater.inflate(R.layout.item_list, null);
-                RecyclerViewAdapterList.ViewHolder viewHolder = new RecyclerViewAdapterList.ViewHolder(itemView);
+                //View layout = inflater.inflate(R.layout.item_infowindow, null);
+                View itemView = inflater.inflate(R.layout.item_infowindow, null);
+                //RecyclerViewAdapterList.ViewHolder viewHolder = new RecyclerViewAdapterList.ViewHolder(itemView);
 
+                Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                try {
+                    List<Address> address = geocoder.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
+                    addressMark = address.get(0).getAddressLine(1) + ", " + address.get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                int markchoose0 = 0;
+
+                for(int i=0;i<mark.size();i++)
+                {
+                    if((marker.getPosition().longitude==mark.get(i).getLng())&&(marker.getPosition().latitude==mark.get(i).getLat()))
+                    {
+                        markchoose0++;
+                    }
+                }
+
+                ImageView imageView = (ImageView)itemView.findViewById(R.id.imageView3);
+                TextView textView = (TextView)itemView.findViewById(R.id.textView10);
+                TextView textView0 = (TextView)itemView.findViewById(R.id.textView9);
+                imageView.setImageResource(R.drawable.z_9dc940eb);
+                textView.setText("Адрес: " + addressMark);
+                textView0.setText("Кол-во предложений в этом месте: " + markchoose0);
 
                 return itemView;
             }
@@ -231,4 +296,106 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }else if (id == R.id.action_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+//        Fragment fragment = null;
+//        Class fragmentClass = null;
+
+        Intent intent;
+        switch(id)
+        {
+            case R.id.nav_camera:
+                intent = new Intent(MapsActivity.this, MapsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_gallery:
+                intent = new Intent(MapsActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_slideshow:
+                intent = new Intent(MapsActivity.this, NotificationActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_manage:
+                //fragmentClass = FragmentPhoto.class;
+                break;
+            case R.id.nav_search:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
+        }
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_gallery) {
+//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_slideshow) {
+//            Intent intent = new Intent(MainActivity.this, ListActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_manage) {
+//            fragmentClass = FragmentMap.class;
+//
+//        } else if (id == R.id.nav_search) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+
+//        try {
+//            fragment = (Fragment) fragmentClass.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.container_all, fragment).commit();
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
