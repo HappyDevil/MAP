@@ -4,22 +4,49 @@ package com.map.mapmaxv1.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
 
-import java.io.Serializable;
 import java.util.Date;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.DaoException;
 
+@Entity(active = true, nameInDb = "Mark")
 public class MarkDTO implements Parcelable {
-    private long id; // ID
-    private String text; // Описание
-    private String title; // Название места маркера
-    private String user; // Ник нейм пользователя
-    private Date date;  // Дата создания марки
-    private int price;  // Цена
-    private String type; // Тип работы
-    private double lat; // Широта
-    private double lng; // Долгота
+
+
+    @Id
+    private long markId;
+
+    @NotNull
+    private String title;
+
+    @NotNull
+    private String text;
+
+    @NotNull
+    private String user;
+
+    @NotNull
+    private Date date;
+
+    @NotNull
+    private int price;
+
+    @NotNull
+    private double lat;
+
+    @NotNull
+    private double lng;
+
+    @NotNull
+    private String type;
+
+    @NotNull
     private String FIO; //  ФИО пользователя
+
+    @NotNull
     private boolean visible; // Видимость
 
     public MarkDTO() {
@@ -27,16 +54,36 @@ public class MarkDTO implements Parcelable {
 
 
     protected MarkDTO(Parcel in) {
-        id = in.readLong();
+        markId = in.readLong();
         text = in.readString();
         title = in.readString();
         user = in.readString();
+        date = new Date(in.readLong());
         price = in.readInt();
         type = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
         FIO = in.readString();
         visible = in.readByte() != 0;
+    }
+
+
+    @Generated(hash = 834572465)
+    public MarkDTO(long markId, @NotNull String title, @NotNull String text,
+            @NotNull String user, @NotNull Date date, int price, double lat,
+            double lng, @NotNull String type, @NotNull String FIO,
+            boolean visible) {
+        this.markId = markId;
+        this.title = title;
+        this.text = text;
+        this.user = user;
+        this.date = date;
+        this.price = price;
+        this.lat = lat;
+        this.lng = lng;
+        this.type = type;
+        this.FIO = FIO;
+        this.visible = visible;
     }
 
     public static final Creator<MarkDTO> CREATOR = new Creator<MarkDTO>() {
@@ -51,12 +98,20 @@ public class MarkDTO implements Parcelable {
         }
     };
 
-    public long getId() {
-        return id;
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 463915504)
+    private transient MarkDTODao myDao;
+
+    public long getMarkId() {
+        return markId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMarkId(long markId) {
+        this.markId = markId;
     }
 
     public String getFIO() {
@@ -146,15 +201,68 @@ public class MarkDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeLong(markId);
         dest.writeString(text);
         dest.writeString(title);
         dest.writeString(user);
+        dest.writeLong(date.getTime());
         dest.writeInt(price);
         dest.writeString(type);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
         dest.writeString(FIO);
         dest.writeByte((byte)(visible?1:0));
+    }
+
+
+    public boolean getVisible() {
+        return this.visible;
+    }
+
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 429903719)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getMarkDTODao() : null;
     }
 }

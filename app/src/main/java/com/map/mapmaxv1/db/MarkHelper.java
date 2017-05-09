@@ -1,176 +1,76 @@
 package com.map.mapmaxv1.db;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
-import com.map.mapmaxv1.Constants;
+import com.map.mapmaxv1.MapApp;
+import com.map.mapmaxv1.dto.DaoSession;
 import com.map.mapmaxv1.dto.MarkDTO;
+import com.map.mapmaxv1.dto.MarkDTODao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MarkHelper extends SQLiteOpenHelper
+public class MarkHelper extends AppCompatActivity
 {
 
-    private SQLiteDatabase db;
     private Date lastDate;
-    private int minID;
+    private long minID;
+
+    private MarkDTODao markDAO;
 
     public Date getLastDate() {
         return lastDate;
     }
 
     public MarkHelper(Context context) {
-        super(context, Constants.MARK_DB.DATABASE_NAME, null, Constants.MARK_DB.DATABASE_VERSION);
+        super();
+
+        DaoSession daoSession = ((MapApp)getApplication()).getDaoSession();
+        markDAO = daoSession.getMarkDTODao();
+
         minID = 0;
         lastDate = null;
     }
 
-    public void openConnection(SQLiteDatabase connect)
+    public void writeMark(MarkDTO markDTO,boolean global)
     {
-        db = connect;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // создаем таблицу с полями
-        db.execSQL("CREATE TABLE " + Constants.MARK_DB.DATABASE_TABLE_NAME + " (" +
-                Constants.MARK_DB.MARK_ID + " INTEGER PRIMARY KEY," + Constants.MARK_DB.MARK_TEXT + " TEXT," +
-                Constants.MARK_DB.MARK_USER + " TEXT, " + Constants.MARK_DB.MARK_DATE + " INTEGER," +
-                Constants.MARK_DB.MARK_PRICE + " INTEGER," + Constants.MARK_DB.MARK_LAT + " INTEGER," +
-                Constants.MARK_DB.MARK_LNG + " TEXT," + Constants.MARK_DB.MARK_TYPE + " TEXT," +
-                Constants.MARK_DB.MARK_FIO + " TEXT," + Constants.MARK_DB.MARK_VISIBLE + " INTEGER," +
-                Constants.MARK_DB.MARK_VERSION + " INTEGER);");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    public int writeMark(MarkDTO markDTO,boolean global)
-    {
-        try
+        if(!global)
         {
-            ContentValues newValues = new ContentValues();
-
-            if(global) newValues.put(Constants.MARK_DB.MARK_ID, markDTO.getId());
-            else
-            {
-                minID--;
-                newValues.put(Constants.MARK_DB.MARK_ID,minID);
-            }
-            newValues.put(Constants.MARK_DB.MARK_TEXT, markDTO.getText());
-            newValues.put(Constants.MARK_DB.MARK_USER, markDTO.getUser());
-            newValues.put(Constants.MARK_DB.MARK_DATE, String.valueOf(markDTO.getDate()));
-            newValues.put(Constants.MARK_DB.MARK_PRICE, String.valueOf(markDTO.getPrice()));
-            newValues.put(Constants.MARK_DB.MARK_LAT, String.valueOf(markDTO.getLat()));
-            newValues.put(Constants.MARK_DB.MARK_LNG, String.valueOf(markDTO.getLng()));
-            newValues.put(Constants.MARK_DB.MARK_TYPE, markDTO.getType());
-            newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
-
-            newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
-
-            db.insert(Constants.MARK_DB.DATABASE_TABLE_NAME, null, newValues);
+            minID--;
+            markDTO.setMarkId(minID);
         }
-        catch (SQLiteException ex){
-           //Log.d("DB_EXCEPTION", "Not enough memory");
-        }
-        return minID;
+        markDAO.insert(markDTO);
     }
 
+    public void writeListMark(List<MarkDTO> markDTOs)
+    {
+        for(MarkDTO mark : markDTOs)
+        {
+            markDAO.insert(mark);
+        }
+    }
     public void updateMark(MarkDTO markDTO)
     {
-        try {
-            ContentValues newValues = new ContentValues();
-
-            newValues.put(Constants.MARK_DB.MARK_TEXT, markDTO.getText());
-            newValues.put(Constants.MARK_DB.MARK_USER, markDTO.getUser());
-            newValues.put(Constants.MARK_DB.MARK_DATE, String.valueOf(markDTO.getDate()));
-            newValues.put(Constants.MARK_DB.MARK_PRICE, String.valueOf(markDTO.getPrice()));
-            newValues.put(Constants.MARK_DB.MARK_LAT, String.valueOf(markDTO.getLat()));
-            newValues.put(Constants.MARK_DB.MARK_LNG, String.valueOf(markDTO.getLng()));
-            newValues.put(Constants.MARK_DB.MARK_TYPE, markDTO.getType());
-            newValues.put(Constants.MARK_DB.MARK_FIO, markDTO.getFIO());
-            newValues.put(Constants.MARK_DB.MARK_VISIBLE, String.valueOf(markDTO.isVisible()));
-
-            db.update(Constants.MARK_DB.DATABASE_TABLE_NAME, newValues, "id = ?", new String[] { String.valueOf(markDTO.getId()) });
-        }
-        catch (SQLiteException ex){
-            //Log.d("DB_EXCEPTION", "Not enough memory");
-        }
+        markDAO.update(markDTO);
     }
 
     public void deleteMark(MarkDTO markDTO)
     {
-        try {
-            db.delete(Constants.MARK_DB.DATABASE_TABLE_NAME, "id = " + String.valueOf(markDTO.getId()), null);
-        }
-        catch (SQLiteException ex){
-            //Log.d("DB_EXCEPTION", "Memory blocked");
-        }
+        markDAO.delete(markDTO);
     }
 
-    public List<MarkDTO>  readMark(String[] columns,String selection,String[] selectionArgs, String groupBy,String having,String orderBy)
+    public List<MarkDTO>  readMark()
     {
-        List<MarkDTO> mark= new ArrayList<>();
-        MarkDTO m;
-        try {
-            Cursor c = db.query(Constants.MARK_DB.DATABASE_TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
-            if(c.moveToFirst())
-            {
-                int idColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_ID);
-                int textColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_TEXT);
-                int userColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_USER);
-                int dateColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_DATE);
-                int priceColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_PRICE);
-                int latColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_LAT);
-                int lngColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_LNG);
-                int typeColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_TYPE);
-                int fioColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_FIO);
-                int visibleColIndex = c.getColumnIndex(Constants.MARK_DB.MARK_VISIBLE);
+        List<MarkDTO> markDTOs;
 
-                do {
-                    m=new MarkDTO();
-                    int id =  c.getInt(idColIndex);
+        markDTOs= markDAO.loadAll();
 
-                    if(minID>id) minID=id;
-
-                    m.setId(id);
-                    m.setText(c.getString(textColIndex));
-                    m.setUser(c.getString(userColIndex));
-                    Date date = new Date(c.getString(dateColIndex));
-
-                    if((lastDate==null)||(lastDate.before(date))) lastDate=date;
-
-                    m.setDate(date);
-                    m.setPrice(c.getInt(priceColIndex));
-                    m.setLat(c.getDouble(latColIndex));
-                    m.setLng(c.getDouble(lngColIndex));
-                    m.setType(c.getString(typeColIndex));
-                    m.setFIO(c.getString(fioColIndex));
-
-                    String vis = c.getString(visibleColIndex);
-                    boolean b;
-                    if(vis.equals("true")) b=true;
-                    else b=false;
-                    m.setVisible(b);
-
-                    mark.add(m);
-                }while(c.moveToNext());
-                c.close();
-            }
+        for(MarkDTO mark : markDTOs)
+        {
+            if(mark.getMarkId()<minID) minID = mark.getMarkId();
         }
-        catch (SQLiteException ex){
-            //Log.d("DB_EXCEPTION", "Read error!");
-        }
-        return mark;
+
+        return markDTOs;
     }
 }

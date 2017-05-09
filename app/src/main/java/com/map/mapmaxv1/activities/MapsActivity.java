@@ -59,12 +59,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this); /**создание карты */
 
         db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
-        db.openConnection(db.getWritableDatabase());
 
         /** Тут должна быть попытка конекшена */
-        mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
-
-        db.close();
+        mark = db.readMark();/** Считали данные из БД */
 
     }
 
@@ -121,18 +118,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markDTO.setPrice(Integer.parseInt(data.getStringExtra("Price")));
                 markDTO.setDate(new Date());
                 markDTO.setVisible(visible);
-                if (data.getStringExtra("CheckData").equals("true"))  /** проверяет в какую базу данных загружать маркер, локальный он будет или нет */
-                {
-                    db.openConnection(db.getWritableDatabase());
-                    int id=db.writeMark(markDTO,false); /** добавление маркера в локальную базу данных */
-                    markDTO.setId(id);
-                    mark.add(markDTO);
-                    db.close();
-                }
-                else
-                {
-                    mark.add(markDTO);
-                }
+
+                boolean b=Boolean.valueOf(data.getStringExtra("CheckData"));
+
+                db.writeMark(markDTO,b);
+                mark.add(markDTO);
 
                 MarkerOptions markerOptions = new MarkerOptions();                           /** объявление объекта настроек маркера */
                 markerOptions.position(curMark);

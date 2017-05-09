@@ -12,11 +12,11 @@ public class Constants {
         public static final String SaveMarks=Host+"/mark/save";
         public static final String Auth=Host+"/user/auth";
     }
-    public static class MARK_DB
+    public static class DB
     {
-        public static final int DATABASE_VERSION=1;
         public static final String DATABASE_NAME ="MAPDB";
-        public static final String DATABASE_TABLE_NAME ="Mark";
+
+        public static final String MARK_TABLE_NAME ="Mark";
 
 
         public static final String MARK_ID="id";
@@ -29,7 +29,6 @@ public class Constants {
         public static final String MARK_TYPE="type";
         public static final String MARK_FIO="FIO";
         public static final String MARK_VISIBLE="visible";
-        public static final String MARK_VERSION="version";
     }
     public static class JOB_TYPES
     {

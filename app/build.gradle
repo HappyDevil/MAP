@@ -1,4 +1,10 @@
+apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.android.application'
+
+greendao{
+    schemaVersion 1
+    targetGenDir 'src/main/java'
+}
 
 android {
     compileSdkVersion 25
@@ -25,6 +31,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -42,6 +49,7 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.2'
     compile 'com.android.support.constraint:constraint-layout:+'
+    compile 'org.greenrobot:greendao:3.2.2' // add library
     testCompile 'junit:junit:4.12'
 }
 repositories {
