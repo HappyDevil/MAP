@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,10 +17,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.map.mapmaxv1.activities.FragmentMap;
+import com.map.mapmaxv1.activities.FragmentPhoto;
 import com.map.mapmaxv1.activities.ListActivity;
 import com.map.mapmaxv1.activities.MapsActivity;
 import com.map.mapmaxv1.activities.ProfileActivity;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,26 +101,51 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         Class fragmentClass = null;
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(MainActivity.this, ListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_manage) {
-            fragmentClass = FragmentMap.class;
-
-        } else if (id == R.id.nav_search) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        Intent intent;
+        switch(id)
+        {
+            case R.id.nav_camera:
+                intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_gallery:
+                intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_slideshow:
+                intent = new Intent(MainActivity.this, ListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_manage:
+                fragmentClass = FragmentPhoto.class;
+                break;
+            case R.id.nav_search:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
         }
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_gallery) {
+//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_slideshow) {
+//            Intent intent = new Intent(MainActivity.this, ListActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_manage) {
+//            fragmentClass = FragmentMap.class;
+//
+//        } else if (id == R.id.nav_search) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();

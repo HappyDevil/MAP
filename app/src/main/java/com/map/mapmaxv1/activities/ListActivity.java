@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -24,12 +25,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.map.mapmaxv1.CircularTransformation;
 import com.map.mapmaxv1.MainActivity;
 import com.map.mapmaxv1.R;
 import com.map.mapmaxv1.ResizeAnimation;
 import com.map.mapmaxv1.dto.MarkDTO;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +48,19 @@ public class ListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private List<MarkDTO> markDTO;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+//        imageView = (ImageView)findViewById(R.id.imageView3);
+//        Picasso.with(this)
+//                .load(R.drawable.z_9dc940eb)
+//                .transform(new CircularTransformation(0))
+//                .into(imageView);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewList);
 
@@ -56,7 +68,7 @@ public class ListActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(this);
 
-        adapterList = new RecyclerViewAdapterList(markDTO);
+        adapterList = new RecyclerViewAdapterList(markDTO, this);
 
 
         recyclerView.setLayoutManager(layoutManager);

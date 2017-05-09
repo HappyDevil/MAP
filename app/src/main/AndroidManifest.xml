@@ -52,9 +52,19 @@
 
         <activity
             android:name=".activities.MapsActivity"
+<<<<<<< HEAD
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+=======
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+>>>>>>> fragi
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -64,6 +74,9 @@
             android:theme="@style/AppTheme1"/>
 
         <activity android:name=".activities.ListActivity"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".activities.NotificationActivity"
             android:theme="@style/AppTheme"/>
 
         <activity

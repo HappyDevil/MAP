@@ -12,8 +12,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
+import com.map.mapmaxv1.CircularTransformation;
 import com.map.mapmaxv1.R;
+import com.map.mapmaxv1.dto.MarkDTO;
+import com.map.mapmaxv1.dto.UserDTO;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -22,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView mRecycleView;
     private RecyclerViewAdapterProfile mAdapter;
     private StaggeredGridLayoutManager mGridLayoutManager;
+    private List<UserDTO> UserDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +46,14 @@ public class ProfileActivity extends AppCompatActivity {
         mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setLayoutManager(mGridLayoutManager);
-        mAdapter = new RecyclerViewAdapterProfile(getResources().getStringArray(R.array.numbers));
+        mAdapter = new RecyclerViewAdapterProfile(UserDTO);
         mRecycleView.setAdapter(mAdapter);
+
+//        ImageView imageView = (ImageView)findViewById(R.id.imageView3);
+//        Picasso.with(this)
+//                .load(R.drawable.z_9dc940eb)
+//                .transform(new CircularTransformation(0))
+//                .into(imageView);
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.z_9dc940eb);
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {

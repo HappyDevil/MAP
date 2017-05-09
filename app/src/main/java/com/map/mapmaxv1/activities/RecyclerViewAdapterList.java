@@ -1,5 +1,6 @@
 package com.map.mapmaxv1.activities;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +21,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.map.mapmaxv1.CircularTransformation;
 import com.map.mapmaxv1.R;
 import com.map.mapmaxv1.dto.MarkDTO;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,30 +35,37 @@ import java.util.List;
 public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAdapterList.ViewHolder>{
 
     private List<MarkDTO> mList;
+    private Context context;
 
-    public RecyclerViewAdapterList(List<MarkDTO> list) {
+    public RecyclerViewAdapterList(List<MarkDTO> list, Context context) {
         this.mList = list;
+        this.context = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.item_list, parent, false);
+        View itemView = inflater.inflate(R.layout.card_marker, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterList.ViewHolder holder, int position) {
-        Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.z_9dc940eb);
-        //Bitmap bitmap = ((BitmapDrawable)holder.profilePhoto.getDrawable()).getBitmap();
-        bitmap = getCircleImageUsingShader(bitmap, 10);
-        Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
+//        Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.z_9dc940eb);
+//        //Bitmap bitmap = ((BitmapDrawable)holder.profilePhoto.getDrawable()).getBitmap();
+//        bitmap = getCircleImageUsingShader(bitmap, 10);
+//        Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
 
-        holder.nameTextViewList.setText(position+1 + ". " + mList.get(position).getFIO());
+        Picasso.with(context)
+                .load(R.drawable.z_9dc940eb)
+                .transform(new CircularTransformation(1450))
+                .into(holder.profilePhoto);
+
+        holder.nameTextViewList.setText(mList.get(position).getFIO());
         holder.textViewList.setText(mList.get(position).getText());
         holder.priceTextViewList.setText(String.valueOf(mList.get(position).getPrice()) + " руб.");
-        holder.profilePhoto.setImageDrawable(drawable);
+        //holder.profilePhoto.setImageDrawable(drawable);
         holder.typeTextViewList.setText(mList.get(position).getType());
         holder.titleTextViewList.setText(mList.get(position).getTitle());
         //holder.galleryMarker.setImageResource(R.drawable.z_9dc940eb);
@@ -78,87 +88,87 @@ public class RecyclerViewAdapterList extends RecyclerView.Adapter<RecyclerViewAd
         private TextView textViewList;
         private TextView addressViewList;
         private ImageView profilePhoto;
-        private ImageButton galleryMarker;
+        private ImageView galleryMarker;
         private CardView cardView;
         private TextView typeTextViewList;
         private TextView titleTextViewList;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView)itemView.findViewById(R.id.cv);
-            nameTextViewList = (TextView)itemView.findViewById(R.id.textView3);
-            titleTextViewList = (TextView)itemView.findViewById(R.id.textView4);
-            priceTextViewList = (TextView)itemView.findViewById(R.id.textView6);
-            textViewList = (TextView)itemView.findViewById(R.id.textView5);
-            typeTextViewList = (TextView)itemView.findViewById(R.id.textView7);
-            profilePhoto = (ImageView)itemView.findViewById(R.id.imageView2);
-            galleryMarker = (ImageButton)itemView.findViewById(R.id.imageButton3);
+            cardView = (CardView)itemView.findViewById(R.id.card_m);
+            nameTextViewList = (TextView)itemView.findViewById(R.id.textView16);
+            titleTextViewList = (TextView)itemView.findViewById(R.id.textView18);
+            priceTextViewList = (TextView)itemView.findViewById(R.id.textView19);
+            textViewList = (TextView)itemView.findViewById(R.id.textView17);
+            typeTextViewList = (TextView)itemView.findViewById(R.id.textView15);
+            profilePhoto = (ImageView)itemView.findViewById(R.id.imageView4);
+            galleryMarker = (ImageView)itemView.findViewById(R.id.imageView5);
             itemView.setTag(itemView);
         }
 
-        public TextView getAddressViewList() {
-            return addressViewList;
-        }
-
-        public void setAddressViewList(TextView addressViewList) {
-            this.addressViewList = addressViewList;
-        }
-
-        public TextView getNameTextViewList() {
-            return nameTextViewList;
-        }
-
-        public void setNameTextViewList(TextView nameTextViewList) {
-            this.nameTextViewList = nameTextViewList;
-        }
-
-        public TextView getPriceTextViewList() {
-            return priceTextViewList;
-        }
-
-        public void setPriceTextViewList(TextView priceTextViewList) {
-            this.priceTextViewList = priceTextViewList;
-        }
-
-        public TextView getTextViewList() {
-            return textViewList;
-        }
-
-        public void setTextViewList(TextView textViewList) {
-            this.textViewList = textViewList;
-        }
-
-        public ImageView getProfilePhoto() {
-            return profilePhoto;
-        }
-
-        public void setProfilePhoto(ImageView profilePhoto) {
-            this.profilePhoto = profilePhoto;
-        }
-
-        public ImageButton getGalleryMarker() {
-            return galleryMarker;
-        }
-
-        public void setGalleryMarker(ImageButton galleryMarker) {
-            this.galleryMarker = galleryMarker;
-        }
-
-        public CardView getCardView() {
-            return cardView;
-        }
-
-        public void setCardView(CardView cardView) {
-            this.cardView = cardView;
-        }
-
-        public TextView getTypeTextViewList() {
-            return typeTextViewList;
-        }
-
-        public void setTypeTextViewList(TextView typeTextViewList) {
-            this.typeTextViewList = typeTextViewList;
-        }
+//        public TextView getAddressViewList() {
+//            return addressViewList;
+//        }
+//
+//        public void setAddressViewList(TextView addressViewList) {
+//            this.addressViewList = addressViewList;
+//        }
+//
+//        public TextView getNameTextViewList() {
+//            return nameTextViewList;
+//        }
+//
+//        public void setNameTextViewList(TextView nameTextViewList) {
+//            this.nameTextViewList = nameTextViewList;
+//        }
+//
+//        public TextView getPriceTextViewList() {
+//            return priceTextViewList;
+//        }
+//
+//        public void setPriceTextViewList(TextView priceTextViewList) {
+//            this.priceTextViewList = priceTextViewList;
+//        }
+//
+//        public TextView getTextViewList() {
+//            return textViewList;
+//        }
+//
+//        public void setTextViewList(TextView textViewList) {
+//            this.textViewList = textViewList;
+//        }
+//
+//        public ImageView getProfilePhoto() {
+//            return profilePhoto;
+//        }
+//
+//        public void setProfilePhoto(ImageView profilePhoto) {
+//            this.profilePhoto = profilePhoto;
+//        }
+//
+//        public ImageButton getGalleryMarker() {
+//            return galleryMarker;
+//        }
+//
+//        public void setGalleryMarker(ImageButton galleryMarker) {
+//            this.galleryMarker = galleryMarker;
+//        }
+//
+//        public CardView getCardView() {
+//            return cardView;
+//        }
+//
+//        public void setCardView(CardView cardView) {
+//            this.cardView = cardView;
+//        }
+//
+//        public TextView getTypeTextViewList() {
+//            return typeTextViewList;
+//        }
+//
+//        public void setTypeTextViewList(TextView typeTextViewList) {
+//            this.typeTextViewList = typeTextViewList;
+//        }
     }
 
     public static Bitmap getCircleImageUsingShader(Bitmap sourse, int radius){
