@@ -14,9 +14,8 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true, nameInDb = "Mark")
 public class MarkDTO implements Parcelable {
-
-
-    @Id
+    
+    @Id(autoincrement = true)
     private long markId;
 
     @NotNull

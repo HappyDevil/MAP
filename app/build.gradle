@@ -13,6 +13,7 @@ android {
         applicationId "com.map.mapmaxv1"
         minSdkVersion 15
         targetSdkVersion 25
+        multiDexEnabled = true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -49,9 +50,9 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.2'
     compile 'com.android.support.constraint:constraint-layout:+'
-    compile 'org.greenrobot:greendao:3.2.2' // add library
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
+    compile 'org.greenrobot:greendao:3.2.2' // add library
 }
 repositories {
     maven {
