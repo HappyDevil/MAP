@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -63,9 +64,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String addressMark = null;
     private Marker oneMarker;
     private List<MarkDTO> markchoose;
-    private boolean markersize = true;
+    private boolean type = true;
     private MarkHelper db;
     private Context context;
+    public static final String APP_PREFERENCES = "settings";
+    public static final String APP_PREFERENCES_MARKER_LIMIT = "marker_limit";
+    public static final String APP_PREFERENCES_TYPE = "type";
+    private SharedPreferences mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +81,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this); /**создание карты */
 
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
         context = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (type == true){
+                    Snackbar.make(view, "Теперь вы модель", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    type = false;
+                }else {
+                    Snackbar.make(view, "Теперь вы мастер", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    type = true;
+                }
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -107,7 +122,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
 
         db.close();
-
     }
 
 
@@ -133,6 +147,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mSettings.contains(APP_PREFERENCES_MARKER_LIMIT))
+        if (mSettings.contains(APP_PREFERENCES_TYPE)){
+            // Получаем число из настроек
+            markerLimit = mSettings.getInt(APP_PREFERENCES_MARKER_LIMIT, 0);
+            type = mSettings.getBoolean(APP_PREFERENCES_TYPE, false);
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Запоминаем данные
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putInt(APP_PREFERENCES_MARKER_LIMIT, markerLimit);
+        editor.putBoolean(APP_PREFERENCES_TYPE, type);
+        editor.apply();
+    }
 
     public void showMarks(List<MarkDTO> mark)
     {
@@ -350,12 +386,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent = new Intent(MapsActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_adds:
+                intent = new Intent(MapsActivity.this, ListActivity.class);
+                intent.putParcelableArrayListExtra("MarkList", (ArrayList<? extends Parcelable>) mark);
+                startActivity(intent);
+                break;
             case R.id.nav_slideshow:
                 intent = new Intent(MapsActivity.this, NotificationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_manage:
                 //fragmentClass = FragmentPhoto.class;
+                intent = new Intent(MapsActivity.this, FollowActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_search:
                 break;
@@ -364,26 +407,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.nav_send:
                 break;
         }
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-//            startActivity(intent);
-//        } else if (id == R.id.nav_gallery) {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
-//        } else if (id == R.id.nav_slideshow) {
-//            Intent intent = new Intent(MainActivity.this, ListActivity.class);
-//            startActivity(intent);
-//        } else if (id == R.id.nav_manage) {
-//            fragmentClass = FragmentMap.class;
-//
-//        } else if (id == R.id.nav_search) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
 //        try {
 //            fragment = (Fragment) fragmentClass.newInstance();

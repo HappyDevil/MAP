@@ -48,19 +48,11 @@ public class ListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private List<MarkDTO> markDTO;
-    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-//        imageView = (ImageView)findViewById(R.id.imageView3);
-//        Picasso.with(this)
-//                .load(R.drawable.z_9dc940eb)
-//                .transform(new CircularTransformation(0))
-//                .into(imageView);
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewList);
 
@@ -78,36 +70,17 @@ public class ListActivity extends AppCompatActivity {
 
 
 
-    public void onClickCard(View view) {
-        int targetSize = view.getHeight()+200;
-
-        ResizeAnimation resizeAnimation = new ResizeAnimation(view, targetSize);
-        resizeAnimation.setDuration(600);
-        view.startAnimation(resizeAnimation);
-    }
+//    public void onClickCard(View view) {
+//        int targetSize = view.getHeight()+200;
+//
+//        ResizeAnimation resizeAnimation = new ResizeAnimation(view, targetSize);
+//        resizeAnimation.setDuration(600);
+//        view.startAnimation(resizeAnimation);
+//    }
 
     public void onClickButton(View view){
         Intent intent = new Intent(ListActivity.this, ProfileActivity.class);
         startActivity(intent);
-    }
-
-    public static Bitmap getCircleImageUsingShader(Bitmap sourse, int radius){
-        if (sourse == null){ return null; }
-
-        int diam = radius << 1;
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        Bitmap scaleBitmap = Bitmap.createScaledBitmap(sourse, diam, diam, true);
-        final Shader shader = new BitmapShader(scaleBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        paint.setShader(shader);
-
-        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(targetBitmap);
-
-        canvas.drawCircle(radius, radius, radius, paint);
-
-        return targetBitmap;
     }
 
 }

@@ -2,13 +2,13 @@ package com.map.mapmaxv1.dto;
 
 public class UserDTO {
 
-    private String username;
+    private String username; // Логин пользователя
 
-    private String password;
+    private String password; // Пароль пользователя
 
-    private String FIO;
+    private String FIO; // Его ФИО, так ка его видят другие
 
-    private String role;
+    private String role; // Его тип работы, кто он по профилю
 
     public UserDTO() {
     }

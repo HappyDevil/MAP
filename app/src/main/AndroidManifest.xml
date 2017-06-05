@@ -45,39 +45,35 @@
         <activity
             android:name=".activities.MarkerActivity"
             android:label="MarkerCreate" />
-
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme2">
+            android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name=".activities.ProfileActivity"
-            android:theme="@style/AppTheme1"/>
-
-        <activity android:name=".activities.ListActivity"
-            android:theme="@style/AppTheme"/>
-
-        <activity android:name=".activities.NotificationActivity"
-            android:theme="@style/AppTheme"/>
-
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".activities.ListActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.NotificationActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
-
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme2">
-
-            </activity>
-
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity android:name=".activities.FollowActivity">
+        </activity>
     </application>
 
 </manifest>
