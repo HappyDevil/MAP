@@ -8,8 +8,12 @@
             android:title="Карта" />
         <item
             android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_photo_black_24dp"
+            android:title="Галлерея" />
+        <item
+            android:id="@+id/nav_adds"
             android:icon="@drawable/ic_person_pin_circle_black_24dp"
-            android:title="Мои заказы" />
+            android:title="Мои предложения" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_notifications_black_24dp"

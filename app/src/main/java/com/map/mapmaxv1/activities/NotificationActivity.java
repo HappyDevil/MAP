@@ -25,12 +25,12 @@ public class NotificationActivity extends AppCompatActivity {
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
 
         tabSpec.setContent(R.id.tab1);
-        tabSpec.setIndicator("Кот");
+        tabSpec.setIndicator("Подписки");
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("tag2");
         tabSpec.setContent(R.id.tab2);
-        tabSpec.setIndicator("Кошка");
+        tabSpec.setIndicator("Отзывы");
         tabHost.addTab(tabSpec);
 
         tabHost.setCurrentTab(0);

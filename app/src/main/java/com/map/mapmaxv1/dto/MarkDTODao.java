@@ -22,7 +22,7 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property MarkId = new Property(0, long.class, "markId", true, "_id");
+        public final static Property MarkId = new Property(0, Long.class, "markId", true, "_id");
         public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
         public final static Property Text = new Property(2, String.class, "text", false, "TEXT");
         public final static Property User = new Property(3, String.class, "user", false, "USER");
@@ -51,7 +51,7 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"Mark\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: markId
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: markId
                 "\"TITLE\" TEXT NOT NULL ," + // 1: title
                 "\"TEXT\" TEXT NOT NULL ," + // 2: text
                 "\"USER\" TEXT NOT NULL ," + // 3: user
@@ -73,7 +73,11 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, MarkDTO entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getMarkId());
+ 
+        Long markId = entity.getMarkId();
+        if (markId != null) {
+            stmt.bindLong(1, markId);
+        }
         stmt.bindString(2, entity.getTitle());
         stmt.bindString(3, entity.getText());
         stmt.bindString(4, entity.getUser());
@@ -89,7 +93,11 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, MarkDTO entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getMarkId());
+ 
+        Long markId = entity.getMarkId();
+        if (markId != null) {
+            stmt.bindLong(1, markId);
+        }
         stmt.bindString(2, entity.getTitle());
         stmt.bindString(3, entity.getText());
         stmt.bindString(4, entity.getUser());
@@ -110,13 +118,13 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.getLong(offset + 0);
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public MarkDTO readEntity(Cursor cursor, int offset) {
         MarkDTO entity = new MarkDTO( //
-            cursor.getLong(offset + 0), // markId
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // markId
             cursor.getString(offset + 1), // title
             cursor.getString(offset + 2), // text
             cursor.getString(offset + 3), // user
@@ -133,7 +141,7 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
      
     @Override
     public void readEntity(Cursor cursor, MarkDTO entity, int offset) {
-        entity.setMarkId(cursor.getLong(offset + 0));
+        entity.setMarkId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTitle(cursor.getString(offset + 1));
         entity.setText(cursor.getString(offset + 2));
         entity.setUser(cursor.getString(offset + 3));
@@ -163,7 +171,7 @@ public class MarkDTODao extends AbstractDao<MarkDTO, Long> {
 
     @Override
     public boolean hasKey(MarkDTO entity) {
-        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
+        return entity.getMarkId() != null;
     }
 
     @Override

@@ -19,12 +19,10 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.map.mapmaxv1.R;
-import com.map.mapmaxv1.db.MarkHelper;
 import com.map.mapmaxv1.dto.MarkDTO;
 
 import java.io.IOException;
@@ -33,8 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static java.lang.Math.sqrt;
 
 /**
@@ -55,24 +51,8 @@ public class FragmentMap extends FragmentActivity implements OnMapReadyCallback 
     private Marker oneMarker;
     private List<MarkDTO> markchoose;
     private boolean markersize = true;
-    private MarkHelper db;
-
     //@Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.activity_maps, container, false);
-//        return view;
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this); /**создание карты */
-//
-//        db = new MarkHelper(this); /** Создали помощника и открыли подключение к DB */
-//        db.openConnection(db.getWritableDatabase());
-//
-//        /** Тут должна быть попытка конекшена */
-//        mark = db.readMark(null,null,null,null,null,null);/** Считали данные из БД */
-//
-//        db.close();
         return null;
     }
 
@@ -122,11 +102,7 @@ public class FragmentMap extends FragmentActivity implements OnMapReadyCallback 
                 markDTO.setVisible(visible);
                 if (data.getStringExtra("CheckData").equals("true"))  /** проверяет в какую базу данных загружать маркер, локальный он будет или нет */
                 {
-                    db.openConnection(db.getWritableDatabase());
-                    int id=db.writeMark(markDTO,false); /** добавление маркера в локальную базу данных */
-                    markDTO.setId(id);
-                    mark.add(markDTO);
-                    db.close();
+
                 }
                 else
                 {

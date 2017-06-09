@@ -4,6 +4,9 @@ package com.map.mapmaxv1.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -13,10 +16,10 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true, nameInDb = "Mark")
-public class MarkDTO implements Parcelable {
+public class MarkDTO implements Parcelable,ClusterItem {
     
     @Id(autoincrement = true)
-    private long markId;
+    private Long markId;
 
     @NotNull
     private String title;
@@ -67,11 +70,10 @@ public class MarkDTO implements Parcelable {
     }
 
 
-    @Generated(hash = 834572465)
-    public MarkDTO(long markId, @NotNull String title, @NotNull String text,
-            @NotNull String user, @NotNull Date date, int price, double lat,
-            double lng, @NotNull String type, @NotNull String FIO,
-            boolean visible) {
+    @Generated(hash = 525986270)
+    public MarkDTO(Long markId, @NotNull String title, @NotNull String text,
+            @NotNull String user, @NotNull Date date, int price, double lat, double lng,
+            @NotNull String type, @NotNull String FIO, boolean visible) {
         this.markId = markId;
         this.title = title;
         this.text = text;
@@ -105,11 +107,11 @@ public class MarkDTO implements Parcelable {
     @Generated(hash = 463915504)
     private transient MarkDTODao myDao;
 
-    public long getMarkId() {
+    public Long getMarkId() {
         return markId;
     }
 
-    public void setMarkId(long markId) {
+    public void setMarkId(Long markId) {
         this.markId = markId;
     }
 
@@ -264,4 +266,12 @@ public class MarkDTO implements Parcelable {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getMarkDTODao() : null;
     }
+
+
+    /* Функции марки */
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(lat,lng);
+    }
+
 }

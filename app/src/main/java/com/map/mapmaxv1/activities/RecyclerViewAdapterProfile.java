@@ -58,11 +58,11 @@ public class RecyclerViewAdapterProfile extends RecyclerView.Adapter<RecyclerVie
                 holder.imageView.setImageResource(R.drawable.ic_school_black_24dp);
                 break;
             case 5:
-                holder.titleTextView.setText("О себе: тест тест тест тест тест тест тест тест тест тест тест");
+                holder.titleTextView.setText("О себе: тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест тест");
                 holder.imageView.setImageResource(R.drawable.ic_person_black_24dp);
                 break;
             case 6:
-                holder.titleTextView.setText("Все заказы");
+                holder.titleTextView.setText("Все предложения");
                 holder.imageView.setImageResource(R.drawable.ic_person_pin_circle_black_24dp);
                 break;
             case 7:

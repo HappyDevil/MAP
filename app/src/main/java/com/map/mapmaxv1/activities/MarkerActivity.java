@@ -18,6 +18,7 @@ public class MarkerActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextText;
     private EditText editTextPrice;
+    private EditText editTextType;
     private TextView textViewAddress;
     private Button button;
     private Switch switchCompat;
@@ -33,6 +34,7 @@ public class MarkerActivity extends AppCompatActivity {
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
         editTextText = (EditText)findViewById(R.id.editTextText);
         editTextPrice = (EditText)findViewById(R.id.editTextPrice);
+        editTextType = (EditText)findViewById(R.id.editTextType);
         button = (Button)findViewById(R.id.button2);
         switchCompat = (Switch) findViewById(R.id.switch1);
 
@@ -52,6 +54,7 @@ public class MarkerActivity extends AppCompatActivity {
             intent.putExtra("Title", editTextTitle.getText().toString());
             intent.putExtra("Text", editTextText.getText().toString());
             intent.putExtra("Price", editTextPrice.getText().toString());
+            intent.putExtra("Type", editTextType.getText().toString());
             intent.putExtra("CheckData", String.valueOf(switchCompat.isChecked()));
             setResult(RESULT_OK, intent);
             finish();
