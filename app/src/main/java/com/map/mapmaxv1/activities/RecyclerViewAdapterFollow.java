@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.map.mapmaxv1.R;
+import com.map.mapmaxv1.dto.CommentDTO;
+import com.map.mapmaxv1.dto.FollowDTO;
 import com.map.mapmaxv1.dto.UserDTO;
 
 import java.util.List;
@@ -18,9 +20,9 @@ import java.util.List;
 
 public class RecyclerViewAdapterFollow extends RecyclerView.Adapter<RecyclerViewAdapterFollow.ViewHolder> {
 
-    private List flist;
+    private List<FollowDTO> flist;
 
-    public RecyclerViewAdapterFollow(List list) {
+    public RecyclerViewAdapterFollow(List<FollowDTO> list) {
         this.flist = list;
     }
 
@@ -34,6 +36,7 @@ public class RecyclerViewAdapterFollow extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerViewAdapterFollow.ViewHolder holder, int position) {
         holder.titleTextView.setText("Максим Попков");
+        holder.titleTextView1.setText("Фотограф");
         holder.imageView.setImageResource(R.drawable.voww);
     }
 
@@ -44,10 +47,12 @@ public class RecyclerViewAdapterFollow extends RecyclerView.Adapter<RecyclerView
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTextView;
+        private TextView titleTextView1;
         private ImageView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
             titleTextView = (TextView)itemView.findViewById(R.id.textView);
+            titleTextView1 = (TextView)itemView.findViewById(R.id.textView26);
             imageView = (ImageView)itemView.findViewById(R.id.imageView6);
             itemView.setTag(itemView);
         }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.map.mapmaxv1.R;
+import com.map.mapmaxv1.dto.CommentDTO;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class RecyclerViewAdapterComment extends RecyclerView.Adapter<RecyclerViewAdapterComment.ViewHolder> {
 
-    private List clist;
+    private List<CommentDTO> clist;
 
-    public RecyclerViewAdapterComment(List list) {
+    public RecyclerViewAdapterComment(List<CommentDTO> list) {
         this.clist = list;
     }
 

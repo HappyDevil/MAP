@@ -7,16 +7,33 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_favorite_black_24dp" />
-
-    <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Test MazaFaka"
-        android:textSize="15sp" />
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/voww" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Name"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="type of job" />
+
+    </LinearLayout>
+
 </LinearLayout>

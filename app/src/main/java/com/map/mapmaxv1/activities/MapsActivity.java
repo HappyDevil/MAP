@@ -401,6 +401,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
                 break;
             case R.id.nav_search:
+                intent = new Intent(MapsActivity.this, SearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_share:
                 break;
