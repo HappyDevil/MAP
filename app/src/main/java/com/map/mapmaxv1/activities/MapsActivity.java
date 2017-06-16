@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +76,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -86,6 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         context = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.getBackground().setAlpha(180);
         setSupportActionBar(toolbar);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
